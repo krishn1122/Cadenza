@@ -1,0 +1,117 @@
+@import '../../styles/abstracts/variables';
+
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 80px; // Match the width of the side nav
+  height: auto;
+  background-color: #1a1a19;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  z-index: 5;
+  box-sizing: border-box;
+  width: calc(100% - 80px); // Ensure it doesn't extend under the sidebar
+}
+
+.header-brand {
+  h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-white;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+}
+
+.header-profile {
+  position: relative;
+}
+
+.profile-dropdown {
+  position: relative;
+  cursor: pointer;
+  background-color: rgba(26, 26, 25, 0.7);
+  border-radius: 24px;
+  padding: 2px 4px 2px 2px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-name {
+  display: flex;
+  flex-direction: column;
+  
+  .user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-white;
+  }
+  
+  .profile-email {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.1);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: opacity 0.3s ease, transform 0.2s ease;
+  }
+}
+
+.dropdown-toggle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  margin-left: 5px;
+  &::after {
+    display: none !important;
+  }
+}
+
+.profile-dropdown-menu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background-color: #1a1a19;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  width: 160px;
+  padding: 8px 0;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+    li {
+      padding: 10px 15px;
+      font-size: 13px;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+    }
+  }
+}

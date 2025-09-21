@@ -1,0 +1,210 @@
+@import '../../styles/abstracts/variables';
+
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #1b1b1b;
+  font-family: "plus-jakarta-sans", sans-serif;
+}
+
+.signup-box {
+  width: 100%;
+  max-width: 600px;
+  padding: 30px 70px;
+  background: #232321;
+  border-top: 1px solid #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo {
+  width: 95px;
+  height: 95px;
+  background-image: url('/assets/images/image.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+.welcome-text {
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  
+  label {
+    display: block;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+    font-size: 14px;
+    
+    .required {
+      color: #ff4d4f;
+    }
+  }
+  
+  .form-control {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: none;
+    padding: 12px 15px;
+    color: $text-white !important;
+    border-radius: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.password-input-container {
+  position: relative;
+  
+  .password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.sign-up-btn {
+  width: 100%;
+  background-color: #000;
+  color: #FFF;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  
+  &:hover {
+    background-color: #1b1b1b;
+  }
+  
+  &:disabled {
+    background-color: #333;
+    cursor: not-allowed;
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px auto;
+  color: #FFFFFF;
+  width: 80%;
+  
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  span {
+    padding: 0 10px;
+    font-size: 14px;
+  }
+}
+
+.social-login {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.google-btn,
+.linkedin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #1b1b1b;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 50%;
+  gap: 10px;
+  font-size: 14px;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  i {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+.google-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFFFFF' d='M12 11v2h4.8c-.2 1-1.4 3-4.8 3-2.9 0-5.2-2.4-5.2-5.3s2.3-5.3 5.2-5.3c1.6 0 2.7.7 3.3 1.3l2.3-2.2C15.9 3.6 14.1 3 12 3 7.8 3 4.4 6.4 4.4 10.7s3.4 7.7 7.6 7.7c4.4 0 7.3-3.1 7.3-7.4 0-.5-.1-1-.1-1.4h-7.2z'/%3E%3C/svg%3E");
+}
+
+.linkedin-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFFFFF' d='M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z'/%3E%3C/svg%3E");
+}
+
+.login-prompt {
+  text-align: center;
+  margin-top: 20px;
+  color: #FFFFFF;
+  font-size: 14px;
+  
+  a {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: 700;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  
+  .terms-text {
+    font-size: 12px;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+@media (max-width: 768px) {
+  .signup-box {
+    padding: 30px 20px;
+  }
+}

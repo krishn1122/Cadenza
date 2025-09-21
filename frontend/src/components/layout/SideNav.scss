@@ -1,0 +1,114 @@
+@import '../../styles/abstracts/variables';
+
+.side-nav {
+  width: 80px;
+  height: 100vh;
+  background-color: #232321;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // This ensures space between top and bottom sections
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0;
+
+  .top-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-container {
+    padding: 15px 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+  }
+
+  .logo {
+    width: 100%;
+    height: auto;
+    max-height: 55px;
+    object-fit: contain;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin: 5px 0 20px;
+  }
+
+  .nav-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 70px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    position: relative;
+    
+    &:hover {
+      color: $text-white;
+    }
+    
+    &.active {
+      color: $text-white;
+    }
+    
+    .nav-item-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 4px;
+      
+      &.active-box {
+        background-color: white;
+        color: #1a1a19;
+      }
+    }
+    
+    .nav-icon {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    
+    .nav-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+  
+  .bottom-section {
+    margin-bottom: 20px;
+    
+    .nav-item {
+      height: 40px;
+      
+      .nav-icon {
+        font-size: 20px;
+        margin-bottom: 0;
+      }
+    }
+  }
+}

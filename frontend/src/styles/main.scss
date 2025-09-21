@@ -1,0 +1,37 @@
+// Import Font
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Bootstrap Icons now imported directly in main.tsx
+
+// Import abstracts
+
+@import 'abstracts/variables';
+
+// Import base styles
+@import 'base/reset';
+@import 'base/typography';
+
+// Import component styles 
+// (Login page has its own SCSS file imported directly in the component)
+
+// Global styles
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: $background-dark;
+  color: $text-white;
+  min-height: 100vh;
+}
+
+* {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+// Fix bootstrap form controls for dark theme
+.form-control {
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: none;
+  }
+}

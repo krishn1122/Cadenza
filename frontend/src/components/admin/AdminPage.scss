@@ -1,0 +1,197 @@
+@import '../../styles/abstracts/variables';
+
+.admin-page {
+  width: 100%;
+  max-width: 1724px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+  color: $text-white;
+}
+
+.back-button-container {
+  margin-bottom: 30px;
+}
+
+.back-button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: $text-white;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  
+  i {
+    margin-right: 5px;
+  }
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: $text-white;
+  }
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.admin-title-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+  color: $text-white;
+}
+
+.admin-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.edit-button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: $text-white;
+  font-size: 13px;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 70px !important;
+  height: 40px !important;
+  
+  
+  i {
+    margin-right: 8px;
+  }
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: $text-white;
+  }
+}
+
+.admin-toggle-btn {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: darken(#0066ff, 10%);
+  }
+}
+
+.users-table-container {
+  background-color: #1a1a19;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: $text-white;
+  
+  th, td {
+    padding: 15px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #232321;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  tr:nth-child(even) {
+    background-color: #232321;
+  }
+  
+  td {
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
+    &:last-child {
+      text-align: center;
+    }
+  }
+  
+  .true-cell {
+    color: #4CAF50;
+  }
+  
+  .false-cell {
+    color: #f44336;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.page-nav, .page-number {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  padding: 5px 10px;
+  cursor: pointer;
+  
+  &:disabled {
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+  }
+  
+  &.active {
+    color: $text-white;
+    font-weight: 600;
+    background-color: #0066ff;
+    border-radius: 4px;
+  }
+  
+  &.dots {
+    cursor: default;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .admin-title-section {
+    margin-bottom: 15px;
+  }
+  
+  .users-table {
+    display: block;
+    overflow-x: auto;
+    
+    th, td {
+      padding: 10px;
+    }
+  }
+}

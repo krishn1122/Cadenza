@@ -1,0 +1,318 @@
+import { Request, Response } from 'express';
+import { Blog, User } from '../models';
+import { AuthRequest } from '../middlewares/auth';
+import { Op } from 'sequelize';
+
+/**
+ * Get all pinned blog posts for dashboard
+ */
+export const getPinnedBlogs = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const pinnedBlogs = await Blog.findAll({
+      where: { 
+        published: true,
+        pinned: true 
+      },
+      order: [['publish_date', 'DESC']],
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'full_name', 'email']
+      }]
+    });
+
+    res.status(200).json({ pinnedBlogs });
+  } catch (error: any) {
+    console.error('Error fetching pinned blogs:', error.message);
+    res.status(500).json({ message: 'Failed to fetch pinned blogs' });
+  }
+};
+
+/**
+ * Get all published blog posts
+ */
+export const getAllBlogs = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const blogs = await Blog.findAll({
+      where: { published: true },
+      order: [['publish_date', 'DESC']],
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'full_name', 'email']
+      }]
+    });
+
+    res.status(200).json({ blogs });
+  } catch (error: any) {
+    console.error('Error fetching blogs:', error.message);
+    res.status(500).json({ message: 'Failed to fetch blogs' });
+  }
+};
+
+/**
+ * Get a single blog post by ID
+ */
+export const getBlogById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const blog = await Blog.findOne({
+      where: { id, published: true },
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'full_name', 'email']
+      }]
+    });
+
+    if (!blog) {
+      res.status(404).json({ message: 'Blog post not found' });
+      return;
+    }
+
+    res.status(200).json({ blog });
+  } catch (error: any) {
+    console.error('Error fetching blog:', error.message);
+    res.status(500).json({ message: 'Failed to fetch blog post' });
+  }
+};
+
+/**
+ * Get blog posts by category
+ */
+export const getBlogsByCategory = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { category } = req.params;
+
+    const blogs = await Blog.findAll({
+      where: { category, published: true },
+      order: [['publish_date', 'DESC']],
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'full_name', 'email']
+      }]
+    });
+
+    res.status(200).json({ blogs });
+  } catch (error: any) {
+    console.error('Error fetching blogs by category:', error.message);
+    res.status(500).json({ message: 'Failed to fetch blogs by category' });
+  }
+};
+
+/**
+ * Create a new blog post (admin only)
+ */
+export const createBlog = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Only admin can create blogs
+    if (!req.user || !req.user.is_admin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const { 
+      title, content, summary, image_url, category, 
+      tags, published, publish_date, pinned 
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !content || !summary) {
+      res.status(400).json({ message: 'Title, content, and summary are required' });
+      return;
+    }
+
+    // If this is a pinned post, unpin all other posts first if needed
+    if (pinned) {
+      await Blog.update(
+        { pinned: false },
+        { where: { pinned: true } }
+      );
+    }
+
+    const blog = await Blog.create({
+      title,
+      content,
+      summary,
+      image_url,
+      author_id: req.user.id,
+      category,
+      tags,
+      published: published || false,
+      publish_date: published ? (publish_date || new Date()) : null,
+      pinned: pinned || false
+    });
+
+    res.status(201).json({ blog, message: 'Blog post created successfully' });
+  } catch (error: any) {
+    console.error('Error creating blog:', error.message);
+    res.status(500).json({ message: 'Failed to create blog post' });
+  }
+};
+
+/**
+ * Update an existing blog post (admin only)
+ */
+export const updateBlog = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Only admin can update blogs
+    if (!req.user || !req.user.is_admin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const { id } = req.params;
+    const { 
+      title, content, summary, image_url, category, 
+      tags, published, publish_date, pinned 
+    } = req.body;
+
+    const blog = await Blog.findByPk(id);
+
+    if (!blog) {
+      res.status(404).json({ message: 'Blog post not found' });
+      return;
+    }
+
+    // Update fields if provided
+    if (title) blog.title = title;
+    if (content) blog.content = content;
+    if (summary) blog.summary = summary;
+    if (image_url !== undefined) blog.image_url = image_url;
+    if (category !== undefined) blog.category = category;
+    if (tags !== undefined) blog.tags = tags;
+    
+    // If published status changed from false to true, set publish date
+    if (published !== undefined) {
+      blog.published = published;
+      if (published && !blog.publish_date) {
+        blog.publish_date = publish_date || new Date();
+      } else if (!published) {
+        blog.publish_date = null;
+      } else if (published && publish_date) {
+        blog.publish_date = publish_date;
+      }
+    }
+    
+    // Handle pinned status change
+    if (pinned !== undefined && pinned !== blog.pinned) {
+      // If pinning this post, unpin all other posts first
+      if (pinned) {
+        await Blog.update(
+          { pinned: false },
+          { where: { id: { [Op.ne]: blog.id }, pinned: true } }
+        );
+      }
+      blog.pinned = pinned;
+    }
+
+    await blog.save();
+
+    res.status(200).json({ blog, message: 'Blog post updated successfully' });
+  } catch (error: any) {
+    console.error('Error updating blog:', error.message);
+    res.status(500).json({ message: 'Failed to update blog post' });
+  }
+};
+
+/**
+ * Delete a blog post (admin only)
+ */
+/**
+ * Toggle the pinned status of a blog post (admin only)
+ */
+export const togglePinned = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Only admin can pin/unpin blogs
+    if (!req.user || !req.user.is_admin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const { id } = req.params;
+    const blog = await Blog.findByPk(id);
+
+    if (!blog) {
+      res.status(404).json({ message: 'Blog post not found' });
+      return;
+    }
+
+    // If we're pinning this post, unpin all other posts first
+    if (!blog.pinned) {
+      await Blog.update(
+        { pinned: false },
+        { where: { id: { [Op.ne]: blog.id }, pinned: true } }
+      );
+    }
+
+    // Toggle the pinned status
+    blog.pinned = !blog.pinned;
+    await blog.save();
+
+    res.status(200).json({ 
+      blog, 
+      message: `Blog post ${blog.pinned ? 'pinned' : 'unpinned'} successfully` 
+    });
+  } catch (error: any) {
+    console.error('Error toggling pinned status:', error.message);
+    res.status(500).json({ message: 'Failed to toggle pinned status' });
+  }
+};
+
+/**
+ * Delete a blog post (admin only)
+ */
+export const deleteBlog = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Only admin can delete blogs
+    if (!req.user || !req.user.is_admin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const { id } = req.params;
+
+    const blog = await Blog.findByPk(id);
+
+    if (!blog) {
+      res.status(404).json({ message: 'Blog post not found' });
+      return;
+    }
+
+    await blog.destroy();
+
+    res.status(200).json({ message: 'Blog post deleted successfully' });
+  } catch (error: any) {
+    console.error('Error deleting blog:', error.message);
+    res.status(500).json({ message: 'Failed to delete blog post' });
+  }
+};
+
+/**
+ * Get all blog posts (including unpublished) - admin only
+ */
+export const getAllBlogsAdmin = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    // Only admin can see all blogs including unpublished
+    if (!req.user || !req.user.is_admin) {
+      res.status(403).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const blogs = await Blog.findAll({
+      order: [['createdAt', 'DESC']],
+      include: [{
+        model: User,
+        as: 'author',
+        attributes: ['id', 'full_name', 'email']
+      }]
+    });
+
+    res.status(200).json({ blogs });
+  } catch (error: any) {
+    console.error('Error fetching all blogs:', error.message);
+    res.status(500).json({ message: 'Failed to fetch blogs' });
+  }
+};

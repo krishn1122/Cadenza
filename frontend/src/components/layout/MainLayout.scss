@@ -1,0 +1,25 @@
+@import '../../styles/abstracts/variables';
+
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #232321;
+  color: $text-white;
+}
+
+// Note: SideNav styles are now in SideNav.scss
+
+.content-area {
+  flex: 1;
+  padding-left: 80px; // Updated to match new sidebar width
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 20px;
+  padding-top: 82px; // Account for header height
+  max-width: 1724px;
+  margin: 0 auto;
+  background-color: #1a1a19;
+}
